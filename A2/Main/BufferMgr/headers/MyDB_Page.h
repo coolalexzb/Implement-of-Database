@@ -14,6 +14,8 @@
 
 #include <memory>
 #include "MyDB_Table.h"
+#include "MyDB_PageType.h"
+#include "MyDB_PageReaderWriter.h"
 #include <string>
 
 // create a smart pointer for pages
@@ -23,6 +25,15 @@ typedef shared_ptr <MyDB_Page> MyDB_PagePtr;
 
 // forward deifnition to handle circular dependencies
 class MyDB_BufferManager;
+
+struct PageOverlay {
+    unsigned offsetToNextUnwritten;
+    /* other meta data here */
+    MyDB_PageType pageType;
+    int numRecs;
+    char bytes[0]; /* this is where the data will be */
+};
+
 
 class MyDB_Page {
 
@@ -68,6 +79,7 @@ private:
 	friend class MyDB_BufferManager;
 	friend class PageComp;
 	friend class CheckLRU;
+	friend class MyDB_PageReaderWriter;
 
 	// a pointer to the raw bytes
 	void *bytes;
@@ -96,6 +108,8 @@ private:
 
 	// kill the page
 	void killpage (MyDB_PagePtr me);
+
+    PageOverlay* metaData;
 };
 
 #endif

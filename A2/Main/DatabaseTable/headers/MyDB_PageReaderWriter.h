@@ -2,8 +2,10 @@
 #ifndef PAGE_RW_H
 #define PAGE_RW_H
 
-#include "MyDB_PageType.h"
+//#include "MyDB_PageType.h"
 #include "MyDB_TableReaderWriter.h"
+#include "MyDB_PageHandle.h"
+#include "MyDB_Page.h"
 
 class MyDB_PageReaderWriter {
 
@@ -11,6 +13,11 @@ public:
 
 	// ANY OTHER METHODS YOU WANT HERE
 
+    MyDB_PageReaderWriter(MyDB_PageHandle page, size_t size);
+
+	bool canWrite(MyDB_RecordPtr appendMe);
+
+	void writeIntoTextFile();
 	// empties out the contents of this page, so that it has no records in it
 	// the type of the page is set to MyDB_PageType :: RegularPage
 	void clear ();	
@@ -34,6 +41,11 @@ public:
 private:
 
 	// ANYTHING ELSE YOU WANT HERE
+
+	MyDB_PageHandle page;
+	size_t curSize;
+
+
 };
 
 #endif

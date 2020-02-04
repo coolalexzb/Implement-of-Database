@@ -8,12 +8,18 @@
 
 using namespace std;
 
-MyDB_TableReaderWriter :: MyDB_TableReaderWriter (MyDB_TablePtr, MyDB_BufferManagerPtr) {
+MyDB_TableReaderWriter :: MyDB_TableReaderWriter (MyDB_TablePtr forMe, MyDB_BufferManagerPtr myBuffer):
+        tablePtr(forMe), myBuffer(myBuffer){
 }
 
-MyDB_PageReaderWriter MyDB_TableReaderWriter :: operator [] (size_t) {
-	MyDB_PageReaderWriter temp;
-	return temp;	
+MyDB_PageReaderWriter MyDB_TableReaderWriter :: operator [] (size_t i) {
+
+	if(i > pages.size()) {
+	    cout << "out of table size" << endl;
+	    return pages[0];
+	}
+
+	return pages[i];
 }
 
 MyDB_RecordPtr MyDB_TableReaderWriter :: getEmptyRecord () {
@@ -21,8 +27,7 @@ MyDB_RecordPtr MyDB_TableReaderWriter :: getEmptyRecord () {
 }
 
 MyDB_PageReaderWriter MyDB_TableReaderWriter :: last () {
-	MyDB_PageReaderWriter temp;
-	return temp;	
+	return pages[pages.size() - 1];
 }
 
 
@@ -37,6 +42,9 @@ MyDB_RecordIteratorPtr MyDB_TableReaderWriter :: getIterator (MyDB_RecordPtr) {
 }
 
 void MyDB_TableReaderWriter :: writeIntoTextFile (string) {
+    for(int i = 0; i < pages.size(); i++) {
+        pages[i].writeIntoTextFile();
+    }
 }
 
 #endif
