@@ -3,12 +3,10 @@
 #define TABLE_RW_H
 
 #include <memory>
+#include <fstream>
 #include "MyDB_BufferManager.h"
-#include "MyDB_Record.h"
-#include "MyDB_RecordIterator.h"
-#include "MyDB_Table.h"
-#include "MyDB_PageRecIterator.h"
 #include "MyDB_TableRecIterator.h"
+#include "MyDB_Record.h"
 
 // create a smart pointer for the catalog
 using namespace std;
@@ -19,8 +17,6 @@ typedef shared_ptr <MyDB_TableReaderWriter> MyDB_TableReaderWriterPtr;
 class MyDB_TableReaderWriter {
 
 public:
-
-	// ANYTHING ELSE YOU NEED HERE
 
 	// create a table reader/writer for the specified table, using the specified
 	// buffer manager
@@ -46,15 +42,15 @@ public:
 	// access the i^th page in this file
 	MyDB_PageReaderWriter operator [] (size_t i);
 
-        // access the last page in the file
-        MyDB_PageReaderWriter last ();
+	// access the last page in the file
+	MyDB_PageReaderWriter last ();
 
 private:
 
 	// ANYTHING YOU NEED HERE
-    MyDB_TablePtr tablePtr;
-    MyDB_BufferManagerPtr myBuffer;
-    vector<MyDB_PageReaderWriter> pages;
+	MyDB_TablePtr tablePtr;
+	MyDB_BufferManagerPtr myBuffer;
+	vector<MyDB_PageReaderWriter> mytable_pages;
 
 };
 

@@ -13,10 +13,10 @@
 #define PAGE_H
 
 #include <memory>
+#include <string>
 #include "MyDB_Table.h"
 #include "MyDB_PageType.h"
-#include "MyDB_PageReaderWriter.h"
-#include <string>
+
 
 // create a smart pointer for pages
 using namespace std;
@@ -27,13 +27,12 @@ typedef shared_ptr <MyDB_Page> MyDB_PagePtr;
 class MyDB_BufferManager;
 
 struct PageOverlay {
-    unsigned offsetToNextUnwritten;
-    /* other meta data here */
-    MyDB_PageType pageType;
-    int numRecs;
-    char bytes[0]; /* this is where the data will be */
+	unsigned offsetToNextUnwritten;
+	MyDB_PageType pageType;
+	/* this is where the data will be */
+	char bytes[0]; 
 };
-
+typedef struct PageOverlay* pageOverlayPtr;
 
 class MyDB_Page {
 
@@ -56,7 +55,7 @@ public:
 	MyDB_Page (MyDB_TablePtr myTable, size_t i, MyDB_BufferManager &parent);
 
 	// sets the bytes in the page
-	void setBytes (void *bytes, size_t numBytes);
+	// void setBytes (void *bytes, size_t numBytes);
 
 	// decrements the ref count
 	inline void decRefCount (MyDB_PagePtr me) {
@@ -79,7 +78,6 @@ private:
 	friend class MyDB_BufferManager;
 	friend class PageComp;
 	friend class CheckLRU;
-	friend class MyDB_PageReaderWriter;
 
 	// a pointer to the raw bytes
 	void *bytes;
@@ -108,8 +106,6 @@ private:
 
 	// kill the page
 	void killpage (MyDB_PagePtr me);
-
-    PageOverlay* metaData;
 };
 
 #endif

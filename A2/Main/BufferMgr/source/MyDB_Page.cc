@@ -28,11 +28,11 @@ void MyDB_Page :: wroteBytes () {
 MyDB_Page :: ~MyDB_Page () {}
 
 MyDB_Page :: MyDB_Page (MyDB_TablePtr myTableIn, size_t iin, MyDB_BufferManager &parentIn) : 
-	parent (parentIn), myTable (myTableIn), pos (iin) {
-    bytes = nullptr;
-    isDirty = false;
-    refCount = 0;
-    timeTick = -1;
+	parent (parentIn), myTable (myTableIn), pos (iin) { 
+	bytes = nullptr;
+	isDirty = false;	
+	refCount = 0;
+	timeTick = -1;
 }
 
 void MyDB_Page :: killpage (MyDB_PagePtr me) {

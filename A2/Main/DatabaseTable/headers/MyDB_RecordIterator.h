@@ -3,6 +3,7 @@
 #define REC_ITER_H
 
 #include <memory>
+#include "MyDB_Record.h"
 using namespace std;
 
 // This pure virtual class is used to iterate through the records in a page or file
@@ -27,6 +28,7 @@ public:
 
 	// destructor and contructor
 	MyDB_RecordIterator () {};
+	
 	virtual ~MyDB_RecordIterator () {};
 
 };

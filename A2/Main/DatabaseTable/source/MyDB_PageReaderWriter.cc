@@ -5,44 +5,41 @@
 #include "MyDB_PageReaderWriter.h"
 
 void MyDB_PageReaderWriter :: clear () {
-    page->page->metaData->numRecs = 0;
-    page->page->metaData->offsetToNextUnwritten = 0;
+	pageOverlayPtr thisPage = (pageOverlayPtr)pageH->getBytes();
+	thisPage->offsetToNextUnwritten = 0;
+	thisPage->pageType = MyDB_PageType :: RegularPage;
+	pageH->page->wroteBytes();
 }
 
 MyDB_PageType MyDB_PageReaderWriter :: getType () {
-    return page->page->metaData->pageType;
-	return MyDB_PageType :: RegularPage;
+	pageOverlayPtr thisPage = (pageOverlayPtr)pageH->getBytes();
+	return thisPage->pageType;
 }
 
-MyDB_RecordIteratorPtr MyDB_PageReaderWriter :: getIterator (MyDB_RecordPtr) {
-	return nullptr;
+MyDB_RecordIteratorPtr MyDB_PageReaderWriter :: getIterator (MyDB_RecordPtr curRec) {
+	return make_shared <MyDB_PageRecIterator>(curRec, pageH);;
 }
 
-void MyDB_PageReaderWriter :: setType (MyDB_PageType toMe) {
-    page->page->metaData->pageType = toMe;
+void MyDB_PageReaderWriter :: setType (MyDB_PageType setMe) {
+	pageOverlayPtr thisPage = (pageOverlayPtr)pageH->getBytes();
+	thisPage->pageType = setMe;
+	pageH->page->wroteBytes();
 }
 
 bool MyDB_PageReaderWriter :: append (MyDB_RecordPtr appendMe) {
-    if(canWrite(appendMe)) {
-
-        //void *next = appendMe->toBinary (&(page->page->metaData->bytes[page->page->metaData->offsetToNextUnwritten]));
-        //page->page->metaData->offsetToNextUnwritten += (char *) next - &(page->page->metaData->bytes[page->page->metaData->offsetToNextUnwritten]);
-        return true;
-    }
-	return false;
+	pageOverlayPtr thisPage = (pageOverlayPtr)pageH->getBytes();
+	if (sizeof(unsigned) + sizeof(MyDB_PageType) + thisPage->offsetToNextUnwritten + appendMe->getBinarySize() > pageH->getParent().getPageSize()) {
+		return false;
+	}
+	
+	void *loc = appendMe->toBinary(&(thisPage->bytes[thisPage->offsetToNextUnwritten]));
+	thisPage->offsetToNextUnwritten = (char *)loc - &(thisPage->bytes[0]);
+	pageH->page->wroteBytes();
+	return true;
 }
 
-bool MyDB_PageReaderWriter :: canWrite(MyDB_RecordPtr appendMe) {
-    return page->page->numBytes - appendMe->getBinarySize() >= 0;
-}
+MyDB_PageReaderWriter :: MyDB_PageReaderWriter(MyDB_PageHandle page) : pageH(page) {}
 
-MyDB_PageReaderWriter :: MyDB_PageReaderWriter(MyDB_PageHandle page, size_t size) :
-        page(page), curSize(size){}
+MyDB_PageReaderWriter :: ~MyDB_PageReaderWriter() {}
 
-void MyDB_PageReaderWriter :: writeIntoTextFile() {
-    PageOverlay* mypage =  (PageOverlay *)page->getBytes();
-    mypage->offsetToNextUnwritten;
-
-    page->wroteBytes();
-}
 #endif
