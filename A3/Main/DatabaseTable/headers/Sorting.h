@@ -2,10 +2,17 @@
 #ifndef SORTING_H
 #define SORTING_H
 
+#include <iostream>
+#include <queue>
 #include "MyDB_PageReaderWriter.h"
 #include "MyDB_TableRecIterator.h"
 #include "MyDB_TableRecIteratorAlt.h"
 #include "MyDB_TableReaderWriter.h"
+#include "RecIterComparator.h"
+
+using namespace std;
+
+void TPMMS_append(MyDB_BufferManagerPtr parent, MyDB_PageReaderWriter &thisPage, vector<MyDB_PageReaderWriter> &pageList, MyDB_RecordPtr recPtr);
 
 // performs a TPMMS of the table sortMe.  The results are written to sortIntoMe.  The run 
 // size for the first phase of the TPMMS is given by runSize.  Comarisons are performed 
