@@ -1,0 +1,77 @@
+(01)
+---------- [ PASS ] ----------
+Great! Query check passed.
+
+(02)
+------------- [ ERROR ] -------------
+----- [ Aggregation Violation ] -----
+[ SELECT ] Attribute "s.s_suppkey" NOT existed in the GROUP_BY clause.
+
+(03)
+------------- [ ERROR ] -------------
+-------- [ Option Violation ] --------
+[ WHERE ] GT Comparison can NOT be done over "int/double" and "string".
+
+(04)
+------------- [ ERROR ] -------------
+-------- [ Option Violation ] --------
+[ SELECT ] SUM can NOT be done over "string".
+
+(05)
+---------- [ PASS ] ----------
+Great! Query check passed.
+
+(06)
+------------- [ ERROR ] -------------
+-------- [ Option Violation ] --------
+[ WHERE ] GT Comparison can NOT be done over "int/double" and "string".
+
+(07)
+------------- [ ERROR ] -------------
+----- [ Attribute NOT Existed ] ------
+[ WHERE ] Attribute "k_orderkey" NOT existed in the Table "orders".
+
+(08)
+------------- [ ERROR ] -------------
+------ [ Symbol NOT Defined ] -------
+[ WHERE ] Symbol "h" NOT defined as a Table.
+
+(09)
+------------- [ ERROR ] -------------
+-------- [ Option Violation ] --------
+[ WHERE ] MINUS can NOT be done over "int/double" and "string".
+
+(10)
+------------- [ ERROR ] -------------
+------- [ Table NOT Existed ] -------
+[ FROM ] Table "customers" NOT existed.
+
+(11)
+---------- [ PASS ] ----------
+Great! Query check passed.
+
+(12)
+---------- [ PASS ] ----------
+Great! Query check passed.
+
+(13)
+------------- [ ERROR ] -------------
+----- [ Attribute NOT Existed ] -----
+[ SELECT ] Attribute "l_extendedprice" NOT existed in the Table "customer".
+
+(14)
+---------- [ PASS ] ----------
+Great! Query check passed.
+
+(15)
+------------- [ ERROR ] -------------
+-------- [ Option Violation ] --------
+[ WHERE ] GT Comparison can NOT be done over "int/double" and "string".
+
+(16)
+---------- [ PASS ] ----------
+Great! Query check passed.
+
+(17)
+---------- [ PASS ] ----------
+Great! Query check passed.
